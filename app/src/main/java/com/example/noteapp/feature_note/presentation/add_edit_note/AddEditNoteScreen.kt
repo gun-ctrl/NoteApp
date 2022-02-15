@@ -45,6 +45,7 @@ fun AddEditNoteScreen(
 
     val scope = rememberCoroutineScope()
 
+    //具有切换效果的背景动画
     val noteBackgroundAnimatable = remember{
         Animatable(
             Color(if (noteColor != -1) noteColor else viewModel.noteColor.value)
@@ -91,6 +92,7 @@ fun AddEditNoteScreen(
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                //绘制顶部颜色选择按钮
                 Note.noteColors.forEach {color ->
                     val colorInt = color.toArgb()
                     Box(
@@ -117,6 +119,7 @@ fun AddEditNoteScreen(
                                         )
                                     )
                                 }
+                                //改变Note的文本颜色
                                 viewModel.onEvent(AddEditNoteEvent.ChangeColor(colorInt))
                             }
                     )

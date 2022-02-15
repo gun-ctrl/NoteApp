@@ -33,9 +33,12 @@ fun NotesScreen(
     viewModel: NotesViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
+    //悬浮按钮的创建需要Scaffold，而Scaffold需要scaffoldState
     val scaffoldState = rememberScaffoldState()
+    //scaffoldState.snackbarHostState.showSnackbar需要 CoroutineScope
     val scope = rememberCoroutineScope()
     Scaffold(
+        //添加AddNote的悬浮按钮
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
@@ -101,6 +104,7 @@ fun NotesScreen(
                                             "?noteId=${note.id}&noteColor=${note.color}"
                                 )
                             },
+                        //删除操作触发的同时，触发恢复提示操作
                         onDeleteClick = {
                             viewModel.onEvent(NotesEvent.DeleteNote(note))
                             scope.launch {
@@ -108,6 +112,7 @@ fun NotesScreen(
                                     message ="Note deleted!",
                                     actionLabel ="Undo"
                                 )
+                                //如果被点击，则恢复刚删除的Note
                                 if (result == SnackbarResult.ActionPerformed){
                                     viewModel.onEvent(NotesEvent.RestoreNote)
                                 }
